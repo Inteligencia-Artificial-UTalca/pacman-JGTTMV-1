@@ -26,9 +26,9 @@ public:
 	GameState(const std::string &filename);
 	void addPacMan(std::shared_ptr<MsPacMan> pacman);
 	void addGhosts(const std::vector<std::shared_ptr<Ghost>> &ghosts);
-//	GameState(const std::string &filename,
-//			std::shared_ptr<Character> pacman,
-//			const std::vector<std::shared_ptr<Character>> &ghosts);
+/*	GameState(const std::string &filename,
+	std::shared_ptr<Character> pacman,
+	const std::vector<std::shared_ptr<Character>> &ghosts);*/
 	virtual ~GameState();
 	void updatePacman(Move m);
 	void updateGhosts(std::vector<Move> m);
@@ -39,7 +39,7 @@ public:
 	const Maze& getMaze() const {
 		return maze;
 	}
-	int isGhostEdible(int g) const{
+	bool isGhostEdible(int g) const{
 		return ghosts[g]->isEdible();
 	}
 	int getGhostsPos(int g) const {
