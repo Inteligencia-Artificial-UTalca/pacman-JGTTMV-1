@@ -21,7 +21,7 @@ FSMController::FSMController(std::shared_ptr<Character> character):
 
 FSMController::~FSMController() {
 }
-
+/*
 ScatterState::ScatterState(std::shared_ptr<Character> _character) : FSMState(_character) {}
 
 Move ScatterState::onUpdate(const GameState& game) {
@@ -47,7 +47,7 @@ Move ScatterState::onUpdate(const GameState& game) {
     }
     return moves[minI];
 }
-
+*/
 NonFrightenedState::NonFrightenedState(std::shared_ptr<Character> _character) : FSMState(_character) {
     chase = std::make_shared<ChaseState>(_character);
     scatter = std::make_shared<ScatterState>(_character);
@@ -72,6 +72,7 @@ Move NonFrightenedState::onUpdate(const GameState& gs) {
 }
 
 void NonFrightenedState::onEnter(const GameState& gs) {
+    (void)gs;
     lastSwitch = std::chrono::high_resolution_clock::now();
     isScatter = true;
     activeSubState = scatter;
@@ -190,11 +191,13 @@ TimerTransition::TimerTransition(std::shared_ptr<FSMState> next, double duration
     : _next(next), _duration(duration), _running(false) {}
 
 void TimerTransition::onTransition(const GameState& gs) {
+    (void)gs;
     _start = std::chrono::high_resolution_clock::now();
     _running = true;
 }
 
 bool TimerTransition::isValid(const GameState& gs) {
+    (void)gs;
     if (!_running) return false;
     
     auto now = std::chrono::high_resolution_clock::now();
@@ -223,7 +226,30 @@ Move FrightenedState::onUpdate(const GameState& game) {
 
 }
 
+////////////////////////////////////////// Scatter //////////////////////////////////////
 
+ScatterState::ScatterState(std::shared_ptr<Character> _character) : FSMState(_character) {}
 
+Move ScatterState::onUpdate(const GameState& game) {
+    const auto targetCoord = std::make_pair(27, 0); //Se definen coordenadas para blinky
+    const auto myPos = character->getPos();
+    auto moves = game.getMaze().getGhostLegalMoves(myPos, character->getDirection());
+    
+    if (moves.empty()) return PASS;
 
-
+    //Logica de distancia minima similar a ChaseState pero hacia targetCoord
+    float min = euclid2(
+        game.getMaze().getNodePos(game.getMaze().getNeighbour(myPos, moves[0])),
+        targetCoord);
+    int minI = 0;
+    for(unsigned int i=1; i<moves.size(); i++){
+        auto dist = euclid2(
+            game.getMaze().getNodePos(game.getMaze().getNeighbour(myPos, moves[i])),
+            targetCoord);
+        if(dist < min){
+            min = dist;
+            minI = i;
+        }
+    }
+    return moves[minI];
+}
