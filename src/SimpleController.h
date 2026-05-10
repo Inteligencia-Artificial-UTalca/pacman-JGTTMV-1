@@ -11,7 +11,8 @@
 #include "Controller.h"
 
 
-class SimpleController: public Controller {
+class SimpleController: public Controller 
+{
 
 public:
 	SimpleController(std::shared_ptr<Character> character);
@@ -19,4 +20,4 @@ public:
 	virtual Move getMove(const GameState& game)override;
 };
 
-#endif /* SIMPLECONTROLLER_H_ */
+#endif

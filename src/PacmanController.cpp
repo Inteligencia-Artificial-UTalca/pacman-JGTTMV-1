@@ -2,10 +2,12 @@
 #include <SDL2/SDL.h>
 
 PacmanController::PacmanController(std::shared_ptr<Character> character):
-	Controller(character){
+	Controller(character)
+	{
 }
 
-PacmanController::~PacmanController() {
+PacmanController::~PacmanController() 
+{
 
 }
 
@@ -13,7 +15,8 @@ PacmanController::~PacmanController() {
 
 
 Move
-PacmanController::getMove(const GameState& game){
+PacmanController::getMove(const GameState& game)
+{
 
 	//para cerrar la ventana
 	SDL_Event e;

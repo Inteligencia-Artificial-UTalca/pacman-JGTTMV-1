@@ -4,11 +4,12 @@
 #include <SDL2/SDL.h>
 
 SimplePacmanController::SimplePacmanController(std::shared_ptr<Character> character):
-	Controller(character){
+	Controller(character)
+{
 }
 
-SimplePacmanController::~SimplePacmanController() {
-	// TODO Auto-generated destructor stub
+SimplePacmanController::~SimplePacmanController() 
+{
 }
 
 
@@ -16,12 +17,14 @@ Move SimplePacmanController::getClosestMove(const GameState& game, std::pair<int
 	int minDist=10000000;
 	Move minMove=character->getDirection();
 	std::vector<Move> moves=game.getMaze().getPossibleMoves(character->getPos());
-	for(Move m:moves){
+	for(Move m:moves)
+	{
 		int vecino = game.getMaze().getNeighbour(character->getPos(),m);
 		if(vecino<0)continue;
 		auto vecinoCoords = game.getMaze().getNodePos(vecino);
 		int sqDist=euclid2(vecinoCoords,target);
-		if(sqDist<minDist){
+		if(sqDist<minDist)
+		{
 			minDist=sqDist;
 			minMove=m;
 		}
@@ -33,12 +36,14 @@ Move SimplePacmanController::getFarthestMove(const GameState& game, std::pair<in
 	int maxDist=-1;
 	Move maxMove=character->getDirection();
 	std::vector<Move> moves=game.getMaze().getPossibleMoves(character->getPos());
-	for(Move m:moves){
+	for(Move m:moves)
+	{
 		int vecino = game.getMaze().getNeighbour(character->getPos(),m);
 		if(vecino<0)continue;
 		auto vecinoCoords = game.getMaze().getNodePos(vecino);
 		int sqDist=euclid2(vecinoCoords,target);
-		if(sqDist>maxDist){
+		if(sqDist>maxDist)
+		{
 			maxDist=sqDist;
 			maxMove=m;
 		}
@@ -53,7 +58,8 @@ float SimplePacmanController::getDistanceToGhost(const GameState& game, int g)co
 }
 
 Move
-SimplePacmanController::getMove(const GameState& game){
+SimplePacmanController::getMove(const GameState& game)
+{
 
 	//para cerrar la ventana
 	SDL_Event e;
@@ -73,12 +79,14 @@ SimplePacmanController::getMove(const GameState& game){
 	auto pacmanCoords = game.getMaze().getNodePos(pacmanNode);
 	
 	std::vector<std::pair<int,int>> ghostPositions;
-	for(int i=0;i<4;i++){
+	for(int i=0;i<4;i++)
+	{
 		ghostPositions.push_back(game.getMaze().getNodePos(game.getGhostsPos(i)));
 	}
 
 	std::vector<bool> ghostsEdible;
-	for(int i=0;i<4;i++){
+	for(int i=0;i<4;i++)
+	{
 		ghostsEdible.push_back(game.isGhostEdible(i));
 	}
 
@@ -92,11 +100,14 @@ SimplePacmanController::getMove(const GameState& game){
 
 
 
-	//arrancar de fantasmas cercanos que me pueden comer 
-	for(int i=0;i<4;i++){
-		if((!ghostsEdible[i])){
-			float tempFear=1.0f-1.0f/(1.0f+pow(2.718f * 0.45f,-getDistanceToGhost(game,i)+32.0f));//logistica
-			if(tempFear>fear){
+	//arranca de fantasmas cercanos que me pueden comer 
+	for(int i=0;i<4;i++)
+	{
+		if((!ghostsEdible[i]))
+		{
+			float tempFear=1.0f-1.0f/(1.0f+pow(2.718f * 0.45f,-getDistanceToGhost(game,i)+32.0f)); //logistica
+			if(tempFear>fear)
+			{
 				fear=tempFear;
 				escapeMove=getFarthestMove(game,ghostPositions[i]);
 			}
@@ -104,11 +115,14 @@ SimplePacmanController::getMove(const GameState& game){
 		
 	}
 
-	//perseguir fantasmas azules
-	for(int i=0;i<4;i++){
-		if(ghostsEdible[i]){
-			float tempHunger=pow(100.0f-getDistanceToGhost(game,i),2)/pow(100.0,2);//cuadratica
-			if(tempHunger>hunger){
+	//persigue fantasmas azules
+	for(int i=0;i<4;i++)
+	{
+		if(ghostsEdible[i])
+		{
+			float tempHunger=pow(100.0f-getDistanceToGhost(game,i),2)/pow(100.0,2); //cuadratica
+			if(tempHunger>hunger)
+			{
 				hunger=tempHunger;
 				eatGhostMove=getClosestMove(game,ghostPositions[i]);;
 			}

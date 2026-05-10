@@ -8,12 +8,10 @@
 #include "Controller.h"
 #include <iostream>
 Controller::Controller(std::shared_ptr<Character> _character):character(_character) {
-	// TODO Auto-generated constructor stub
 
 }
 
 Controller::~Controller() {
-	// TODO Auto-generated destructor stub
 }
 
 Move Controller::getMove(const GameState&) {

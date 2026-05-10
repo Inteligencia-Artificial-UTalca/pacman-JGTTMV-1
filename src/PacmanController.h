@@ -3,7 +3,8 @@
 #include "Controller.h"
 
 
-class PacmanController: public Controller {
+class PacmanController: public Controller
+ {
 
 public:
 	PacmanController(std::shared_ptr<Character> character);

@@ -9,17 +9,20 @@
 #include <iostream>
 
 SimpleController::SimpleController(std::shared_ptr<Character> character):
-	Controller(character){
+	Controller(character)
+{
 }
 
-SimpleController::~SimpleController() {
-	// TODO Auto-generated destructor stub
+SimpleController::~SimpleController() 
+{
 }
 
 Move
-SimpleController::getMove(const GameState& game){
+SimpleController::getMove(const GameState& game)
+{
 
-	if(character->getDirection()==PASS && game.getMaze().getGhostStart()[0])	{
+	if(character->getDirection()==PASS && game.getMaze().getGhostStart()[0])	
+	{
 		return RIGHT;
 	}
 	
@@ -30,11 +33,13 @@ SimpleController::getMove(const GameState& game){
 	int ghostNode = character->getPos();
 	
 	Ghost *ghost = dynamic_cast<Ghost*>(character.get());
-	if(!ghost->isEdible()){
+	if(!ghost->isEdible())
+	{
 		int minDist=10000000;
 		Move minMove=character->getDirection();
 		std::vector<Move> moves=game.getMaze().getGhostLegalMoves(character->getPos(),character->getDirection());
-		for(Move m:moves){
+		for(Move m:moves)
+		{
 
 			int vecino = game.getMaze().getNeighbour(ghostNode,m);
 			
@@ -43,24 +48,28 @@ SimpleController::getMove(const GameState& game){
 			vecinoCoords.first-=pacmanCoords.first;
 			vecinoCoords.second-=pacmanCoords.second;
 			int sqDist=vecinoCoords.first*vecinoCoords.first+vecinoCoords.second*vecinoCoords.second;
-			if(sqDist<minDist){
+			if(sqDist<minDist)
+			{
 				minDist=sqDist;
 				minMove=m;
 			}
 		}
 		return minMove;
-	}else{
+	}else
+	{
 		int maxDist=-1;
 		Move maxMove=character->getDirection();
 		std::vector<Move> moves=game.getMaze().getGhostLegalMoves(character->getPos(),character->getDirection());
-		for(Move m:moves){
+		for(Move m:moves)
+		{
 			int vecino = game.getMaze().getNeighbour(ghostNode,m);
 			if(vecino<0)continue;
 			auto vecinoCoords = game.getMaze().getNodePos(vecino);
 			vecinoCoords.first-=pacmanCoords.first;
 			vecinoCoords.second-=pacmanCoords.second;
 			int sqDist=vecinoCoords.first*vecinoCoords.first+vecinoCoords.second*vecinoCoords.second;
-			if(sqDist>maxDist){
+			if(sqDist>maxDist)
+			{
 				maxDist=sqDist;
 				maxMove=m;
 			}

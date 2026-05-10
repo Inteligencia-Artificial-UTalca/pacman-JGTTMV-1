@@ -14,13 +14,15 @@ RandomController::RandomController(std::shared_ptr<Character> character):
 		srand(time(NULL));
 }
 
-RandomController::~RandomController() {
-	// TODO Auto-generated destructor stub
+RandomController::~RandomController() 
+{
 }
 
 Move
-RandomController::getMove(const GameState& game){
-	if(character->getDirection()==PASS){
+RandomController::getMove(const GameState& game)
+{
+	if(character->getDirection()==PASS)
+	{
 		const auto moves=game.getMaze().getPossibleMoves(character->getPos());
 		Move m=moves[rand()%moves.size()];
 		return m;

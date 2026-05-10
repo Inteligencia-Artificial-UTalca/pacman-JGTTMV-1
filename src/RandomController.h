@@ -11,7 +11,8 @@
 #include "Controller.h"
 #include <random>
 
-class RandomController: public Controller {
+class RandomController: public Controller 
+{
 public:
 	RandomController(std::shared_ptr<Character> character);
 	virtual ~RandomController();
